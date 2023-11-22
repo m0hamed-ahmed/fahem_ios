@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "225748921499",
+    "project_id": "fahem-9ad2c",
+    "storage_bucket": "fahem-9ad2c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225748921499:android:a2560d118db183d56a2a3e",
+        "android_client_info": {
+          "package_name": "com.app.fahem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAITCtY7kLPltmOZqq0lVXe2nv58EeWNdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225748921499:android:12c19504a9545e896a2a3e",
+        "android_client_info": {
+          "package_name": "com.app.fahem_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAITCtY7kLPltmOZqq0lVXe2nv58EeWNdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225748921499:android:1288cfbf2b25a6a36a2a3e",
+        "android_client_info": {
+          "package_name": "com.app.fahem_business"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAITCtY7kLPltmOZqq0lVXe2nv58EeWNdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

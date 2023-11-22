@@ -1,0 +1,79 @@
+name: fahem
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.10+11
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  provider: ^6.1.1
+  get_it: ^7.6.4
+  shimmer: ^3.0.0
+  carousel_slider: ^4.2.1
+  flutter_svg: ^2.0.9
+  lottie: ^2.4.0 #
+  shared_preferences: ^2.2.2
+  photo_view: ^0.14.0
+  dartz: ^0.10.1
+  url_launcher: ^6.1.11 #
+  package_info_plus: ^4.2.0
+  http: ^0.13.6 #
+  http_parser: ^4.0.2
+  file_picker: ^6.1.1
+  readmore: ^2.2.0
+  connectivity_plus: ^5.0.1
+  pin_code_fields: ^8.0.1
+  flutter_holo_date_picker: ^1.1.3
+  animate_do: ^3.0.2 #
+  flutter_rating_bar: ^4.0.1
+  intl: ^0.18.1
+#  awesome_notifications: ^0.7.4+1
+  flutter_local_notifications: ^16.1.0
+  geolocator: ^10.1.0 # No (Linux)
+  geocoding: ^2.1.1 # No (Linux - MacOS - Web - Windows)
+  internet_connection_checker: ^1.0.0+1 # No (web)
+  cached_network_image: ^3.3.0 # No (Linux - Web - Windows)
+  youtube_player_flutter: ^8.1.2 # No (Linux - MacOS - Web - Windows)
+  flutter_phoenix: ^1.1.1 # No (Linux - MacOS - Web - Windows)
+  google_maps_flutter: ^2.5.0 # No (Linux - MacOS - Web - Windows)
+  firebase_core: ^2.22.0 # No (Linux - Windows)
+  firebase_auth: ^4.13.0 # No (Linux - Windows)
+  cloud_firestore: ^4.13.0 # No (Linux - Windows)
+  firebase_storage: ^11.5.0 # No (Linux - Windows)
+  firebase_messaging: ^14.7.4 # No (Linux - Windows)
+#  awesome_notifications_fcm: ^0.7.4+1 # No (Linux - MacOS - Web - Windows)
+  vibration: ^1.8.3 # No (Linux - MacOS - Web - Windows)
+  webview_flutter: ^4.4.2 # No (Linux - MacOS - Web - Windows)
+  video_player: ^2.7.2 #
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/json/
+    - assets/videos/
+
+  fonts:
+    - family: AvenirArabic
+      fonts:
+        - asset: assets/fonts/AvenirArabic/AvenirArabicBlack.ttf
+          weight: 900
+        - asset: assets/fonts/AvenirArabic/AvenirArabicHeavy.ttf
+          weight: 800
+        - asset: assets/fonts/AvenirArabic/AvenirArabicMedium.ttf
+          weight: 500
+        - asset: assets/fonts/AvenirArabic/AvenirArabicBook.ttf
+          weight: 300
+        - asset: assets/fonts/AvenirArabic/AvenirArabicLight.ttf
+          weight: 300
