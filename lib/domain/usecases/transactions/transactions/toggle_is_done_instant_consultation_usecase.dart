@@ -17,6 +17,7 @@ class ToggleIsDoneInstantConsultationUseCase extends BaseUseCase<TransactionMode
 
 class ToggleIsDoneInstantConsultationParameters {
   final int transactionId;
+  final int? bestLawyerId;
 
-  ToggleIsDoneInstantConsultationParameters({required this.transactionId});
+  ToggleIsDoneInstantConsultationParameters({required this.transactionId, required this.bestLawyerId});
 }

@@ -332,6 +332,10 @@ class _TransactionItemState extends State<TransactionItem> {
                               getTargetName(),
                               style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: widget.transactionModel.isViewed ? FontWeightManager.semiBold : FontWeightManager.black),
                             ),
+                            if(widget.transactionModel.transactionType == TransactionType.secretConsultation) Text(
+                              '${Methods.getText(StringsManager.consultationId, appProvider.isEnglish)} CON-${widget.transactionModel.transactionId}',
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: widget.transactionModel.isViewed ? FontWeightManager.semiBold : FontWeightManager.black),
+                            ),
                             if(widget.transactionModel.transactionType != TransactionType.secretConsultation) Text(
                               getTargetJobTitle(),
                               style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: widget.transactionModel.isViewed ? FontWeightManager.semiBold : FontWeightManager.black),

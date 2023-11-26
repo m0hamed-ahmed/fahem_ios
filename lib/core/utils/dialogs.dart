@@ -6,7 +6,6 @@ import 'package:fahem/core/resources/assets_manager.dart';
 import 'package:fahem/core/resources/colors_manager.dart';
 import 'package:fahem/core/resources/constants_manager.dart';
 import 'package:fahem/core/resources/fonts_manager.dart';
-import 'package:fahem/core/resources/routes_manager.dart';
 import 'package:fahem/core/resources/strings_manager.dart';
 import 'package:fahem/core/resources/values_manager.dart';
 import 'package:fahem/core/services/kashier_payment_service.dart';
@@ -27,11 +26,15 @@ import 'package:fahem/data/models/public_relations/public_relations/public_relat
 import 'package:fahem/data/models/public_relations/public_relations_reviews/public_relation_review_model.dart';
 import 'package:fahem/data/models/static/government_model.dart';
 import 'package:fahem/data/models/static/period_model.dart';
+import 'package:fahem/data/models/transactions/instant_consultations_comments/instant_consultation_comment_model.dart';
 import 'package:fahem/data/models/transactions/transactions/transaction_model.dart';
 import 'package:fahem/domain/usecases/lawyers/lawyers_reviews/insert_lawyer_review_usecase.dart';
 import 'package:fahem/domain/usecases/legal_accountants/legal_accountants_reviews/insert_legal_accountant_review_usecase.dart';
 import 'package:fahem/domain/usecases/public_relations/public_relations_reviews/insert_public_relation_review_usecase.dart';
 import 'package:fahem/domain/usecases/transactions/transactions/insert_transaction_usecase.dart';
+import 'package:fahem/presentation/btm_nav_bar/transactions/controllers/instant_consultations_comments_provider.dart';
+import 'package:fahem/presentation/btm_nav_bar/transactions/widgets/instant_consultation_comment_item.dart';
+import 'package:fahem/presentation/features/lawyers/lawyers/controllers/lawyers_provider.dart';
 import 'package:fahem/presentation/features/lawyers/lawyers_reviews/controllers/lawyers_reviews_provider.dart';
 import 'package:fahem/presentation/features/legal_accountants/legal_accountant_reviews/controllers/legal_accountants_reviews_provider.dart';
 import 'package:fahem/presentation/features/profile/controllers/user_account_provider.dart';
@@ -1057,15 +1060,12 @@ class Dialogs {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: () => Navigator.pushNamed(context, Routes.showFullImageRoute, arguments: {ConstantsManager.imageArgument: lawyerModel.personalImage, ConstantsManager.directoryArgument: ApiConstants.lawyersDirectory}),
-            child: SizedBox(
-              width: SizeManager.s80,
-              height: SizeManager.s80,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(SizeManager.s40),
-                child: CachedNetworkImageWidget(image: ApiConstants.fileUrl(fileName: '${ApiConstants.lawyersDirectory}/${lawyerModel.personalImage}')),
-              ),
+          SizedBox(
+            width: SizeManager.s80,
+            height: SizeManager.s80,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(SizeManager.s40),
+              child: CachedNetworkImageWidget(image: ApiConstants.fileUrl(fileName: '${ApiConstants.lawyersDirectory}/${lawyerModel.personalImage}')),
             ),
           ),
           Expanded(
@@ -1128,15 +1128,12 @@ class Dialogs {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(context, Routes.showFullImageRoute, arguments: {ConstantsManager.imageArgument: publicRelationModel.personalImage, ConstantsManager.directoryArgument: ApiConstants.publicRelationsDirectory}),
-                child: SizedBox(
-                  width: SizeManager.s80,
-                  height: SizeManager.s80,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(SizeManager.s40),
-                    child: CachedNetworkImageWidget(image: ApiConstants.fileUrl(fileName: '${ApiConstants.publicRelationsDirectory}/${publicRelationModel.personalImage}')),
-                  ),
+              SizedBox(
+                width: SizeManager.s80,
+                height: SizeManager.s80,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(SizeManager.s40),
+                  child: CachedNetworkImageWidget(image: ApiConstants.fileUrl(fileName: '${ApiConstants.publicRelationsDirectory}/${publicRelationModel.personalImage}')),
                 ),
               ),
               Expanded(
@@ -1201,15 +1198,12 @@ class Dialogs {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(context, Routes.showFullImageRoute, arguments: {ConstantsManager.imageArgument: legalAccountantModel.personalImage, ConstantsManager.directoryArgument: ApiConstants.legalAccountantsDirectory}),
-                child: SizedBox(
-                  width: SizeManager.s80,
-                  height: SizeManager.s80,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(SizeManager.s40),
-                    child: CachedNetworkImageWidget(image: ApiConstants.fileUrl(fileName: '${ApiConstants.legalAccountantsDirectory}/${legalAccountantModel.personalImage}')),
-                  ),
+              SizedBox(
+                width: SizeManager.s80,
+                height: SizeManager.s80,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(SizeManager.s40),
+                  child: CachedNetworkImageWidget(image: ApiConstants.fileUrl(fileName: '${ApiConstants.legalAccountantsDirectory}/${legalAccountantModel.personalImage}')),
                 ),
               ),
               Expanded(
@@ -1455,6 +1449,71 @@ class Dialogs {
                 text: Methods.getText(StringsManager.ok, appProvider.isEnglish).toCapitalized(),
                 onPressed: () {
                   result = orderByGroupValue;
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      ),
+    );
+
+    return Future.value(result);
+  }
+
+  static Future<LawyerModel?> chooseBetterLawyer(BuildContext context) async {
+    AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
+    InstantConsultationsCommentsProvider instantConsultationsCommentsProvider = Provider.of<InstantConsultationsCommentsProvider>(context, listen: false);
+    LawyersProvider lawyersProvider = Provider.of<LawyersProvider>(context, listen: false);
+    InstantConsultationCommentModel? selectedInstantConsultationComment;
+    LawyerModel? result;
+
+    await Dialogs._showBottomSheet(
+      context: context,
+      child: StatefulBuilder(
+        builder: (context, setState) {
+          return Column(
+            children: [
+              Center(
+                child: Text(
+                  Methods.getText(StringsManager.chooseTheBestLawyer, appProvider.isEnglish).toTitleCase(),
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: SizeManager.s20, fontWeight: FontWeightManager.bold),
+                ),
+              ),
+              const SizedBox(height: SizeManager.s20),
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: instantConsultationsCommentsProvider.commentsForTransaction.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () => setState(() => selectedInstantConsultationComment = instantConsultationsCommentsProvider.commentsForTransaction[index]),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: selectedInstantConsultationComment != null && selectedInstantConsultationComment!.instantConsultationCommentId == instantConsultationsCommentsProvider.commentsForTransaction[index].instantConsultationCommentId
+                              ? ColorsManager.primaryColor
+                              : Colors.transparent,
+                          width: SizeManager.s2,
+                        ),
+                      ),
+                      child: InstantConsultationCommentItem(
+                        instantConsultationCommentModel: instantConsultationsCommentsProvider.commentsForTransaction[index],
+                        index: index,
+                        isSupportOnTap: false,
+                        boxColor: ColorsManager.grey1,
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) => const SizedBox(height: SizeManager.s10),
+              ),
+              const SizedBox(height: SizeManager.s20),
+              CustomButton(
+                buttonType: ButtonType.text,
+                text: Methods.getText(StringsManager.ok, appProvider.isEnglish).toCapitalized(),
+                onPressed: () {
+                  if(selectedInstantConsultationComment != null) result = lawyersProvider.getLawyerWithId(selectedInstantConsultationComment!.lawyerId);
                   Navigator.pop(context);
                 },
               ),

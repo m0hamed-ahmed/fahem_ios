@@ -61,6 +61,7 @@ class ApiConstants {
   static const String appField = 'app';
   static const String targetNameField = 'targetName';
   static const String transactionIdField = 'transactionId';
+  static const String bestLawyerIdField = 'bestLawyerId';
   static const String walletIdField = 'walletId';
   static const String packageIdField = 'packageId';
   static const String phoneNumberField = 'phoneNumber';

@@ -136,6 +136,7 @@ class StringsManager {
   static const String name = "name";
   static const String theInstantConsultation = "the_instant_consultation";
   static const String comments = "comments";
+  static const String bestLawyer = "bestLawyer";
   static const String theSecretConsultation = "the_secret_consultation";
   static const String doneConsultation = "done_consultation";
   static const String all = "all";
@@ -257,6 +258,7 @@ class StringsManager {
   static const String videos = "videos";
   static const String watch = "watch";
   static const String orderBy = "order_by";
+  static const String chooseTheBestLawyer = "chooseTheBestLawyer";
   static const String theLawyers = "the_lawyers";
   static const String accountVerification = "accountVerification";
   static const String highestRated = "highest_rated";
@@ -265,4 +267,5 @@ class StringsManager {
   static const String theOldest = "the_oldest";
   static const String fromNearestToFarthest = "from_nearest_to_farthest";
   static const String chargeYourWallet = "chargeYourWallet";
+  static const String consultationId = "consultationId";
 }

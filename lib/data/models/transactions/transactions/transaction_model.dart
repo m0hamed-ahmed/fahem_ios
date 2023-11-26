@@ -12,6 +12,7 @@ class TransactionModel {
   final String? bookingDateTimeStamp;
   final TransactionType transactionType;
   final bool? isDoneInstantConsultation;
+  final int? bestLawyerId;
   final bool isViewed;
   final DateTime createdAt;
 
@@ -27,6 +28,7 @@ class TransactionModel {
     this.bookingDateTimeStamp,
     required this.transactionType,
     this.isDoneInstantConsultation,
+    this.bestLawyerId,
     required this.isViewed,
     required this.createdAt,
   });
@@ -44,6 +46,7 @@ class TransactionModel {
       bookingDateTimeStamp: json['bookingDateTimeStamp'],
       transactionType: TransactionType.toTransactionType(json['transactionType']),
       isDoneInstantConsultation: json['isDoneInstantConsultation'],
+      bestLawyerId: json['bestLawyerId'] == null ? null : int.parse(json['bestLawyerId'].toString()),
       isViewed: json['isViewed'],
       createdAt: DateTime.fromMillisecondsSinceEpoch(int.parse(json['createdAt'])),
     );
@@ -62,6 +65,7 @@ class TransactionModel {
       'bookingDateTimeStamp': transactionModel.bookingDateTimeStamp,
       'transactionType': transactionModel.transactionType.name,
       'isDoneInstantConsultation': transactionModel.isDoneInstantConsultation,
+      'bestLawyerId': transactionModel.bestLawyerId,
       'isViewed': transactionModel.isViewed,
       'createdAt': transactionModel.createdAt.millisecondsSinceEpoch.toString(),
     };

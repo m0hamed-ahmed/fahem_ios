@@ -16,7 +16,6 @@ import 'package:fahem/data/models/users/wallet/wallet_model.dart';
 import 'package:fahem/domain/usecases/users/logs/insert_log_usecase.dart';
 import 'package:fahem/domain/usecases/transactions/transactions/insert_transaction_usecase.dart';
 import 'package:fahem/domain/usecases/users/wallet/edit_wallet_usecase.dart';
-import 'package:fahem/presentation/features/kashier_payment_webview.dart';
 import 'package:fahem/presentation/features/logs/controllers/logs_provider.dart';
 import 'package:fahem/presentation/features/profile/controllers/user_account_provider.dart';
 import 'package:fahem/presentation/features/settings/controllers/settings_provider.dart';

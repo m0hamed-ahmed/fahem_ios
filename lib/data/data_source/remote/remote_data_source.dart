@@ -1141,6 +1141,7 @@ class RemoteDataSource extends BaseRemoteDataSource {
     try {
       Map<String, dynamic> body = {
         ApiConstants.transactionIdField: parameters.transactionId.toString(),
+        ApiConstants.bestLawyerIdField: parameters.bestLawyerId.toString(),
       };
 
       http.Response response = await http.post(

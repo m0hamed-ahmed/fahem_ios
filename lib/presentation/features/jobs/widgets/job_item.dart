@@ -58,19 +58,16 @@ class _JobItemState extends State<JobItem> {
                Row(
                  crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
-                   GestureDetector(
-                     onTap: () => Navigator.pushNamed(context, Routes.showFullImageRoute, arguments: {ConstantsManager.imageArgument: widget.jobModel.image, ConstantsManager.directoryArgument: ApiConstants.jobsDirectory}),
-                     child: SizedBox(
-                       // tag: widget.jobModel.image + ConstantsManager.jobsTag,
-                       child: Container(
-                         clipBehavior: Clip.antiAlias,
-                         width: SizeManager.s80,
-                         height: SizeManager.s80,
-                         decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(SizeManager.s10),
-                         ),
-                         child: CachedNetworkImageWidget(image: ApiConstants.fileUrl(fileName: '${ApiConstants.jobsDirectory}/${widget.jobModel.image}')),
+                   SizedBox(
+                     // tag: widget.jobModel.image + ConstantsManager.jobsTag,
+                     child: Container(
+                       clipBehavior: Clip.antiAlias,
+                       width: SizeManager.s80,
+                       height: SizeManager.s80,
+                       decoration: BoxDecoration(
+                         borderRadius: BorderRadius.circular(SizeManager.s10),
                        ),
+                       child: CachedNetworkImageWidget(image: ApiConstants.fileUrl(fileName: '${ApiConstants.jobsDirectory}/${widget.jobModel.image}')),
                      ),
                    ),
                    Expanded(

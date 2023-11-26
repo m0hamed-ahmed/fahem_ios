@@ -15,8 +15,16 @@ import 'package:provider/provider.dart';
 class InstantConsultationCommentItem extends StatefulWidget {
   final InstantConsultationCommentModel instantConsultationCommentModel;
   final int index;
+  final bool? isSupportOnTap;
+  final Color? boxColor;
 
-  const InstantConsultationCommentItem({super.key, required this.instantConsultationCommentModel, required this.index});
+  const InstantConsultationCommentItem({
+    super.key,
+    required this.instantConsultationCommentModel,
+    required this.index,
+    this.isSupportOnTap = true,
+    this.boxColor,
+  });
 
   @override
   State<InstantConsultationCommentItem> createState() => _InstantConsultationCommentItemState();
@@ -35,18 +43,18 @@ class _InstantConsultationCommentItemState extends State<InstantConsultationComm
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: widget.index % 2 == 0 ? ColorsManager.comment1 : ColorsManager.comment2,
+      color: widget.boxColor ?? (widget.index % 2 == 0 ? ColorsManager.comment1 : ColorsManager.comment2),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => Navigator.pushNamed(context, Routes.lawyerDetailsRoute, arguments: {ConstantsManager.lawyerModelArgument: lawyerModel}),
+          onTap: widget.isSupportOnTap! ? () => Navigator.pushNamed(context, Routes.lawyerDetailsRoute, arguments: {ConstantsManager.lawyerModelArgument: lawyerModel}) : null,
           child: Padding(
             padding: const EdgeInsets.all(SizeManager.s16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, Routes.showFullImageRoute, arguments: {ConstantsManager.imageArgument: lawyerModel.personalImage, ConstantsManager.directoryArgument: ApiConstants.lawyersDirectory}),
+                  onTap: widget.isSupportOnTap! ? () => Navigator.pushNamed(context, Routes.lawyerDetailsRoute, arguments: {ConstantsManager.lawyerModelArgument: lawyerModel}) : null,
                   child: SizedBox(
                     width: SizeManager.s60,
                     height: SizeManager.s60,

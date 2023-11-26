@@ -508,6 +508,10 @@ Map<String, Map<String, String>> languageManager = {
     'english' : 'comments',
     'arabic' : 'تعليقات'
   },
+  'bestLawyer' : {
+    'english' : 'best lawyer',
+    'arabic' : 'افضل محامى'
+  },
   'the_secret_consultation' : {
     'english' : 'secret consultation',
     'arabic' : 'الاستشارة السرية'
@@ -996,6 +1000,10 @@ Map<String, Map<String, String>> languageManager = {
     'english' : 'order by',
     'arabic' : 'رتب حسب'
   },
+  'chooseTheBestLawyer' : {
+    'english' : 'choose the best lawyer',
+    'arabic' : 'اختر افضل محامى'
+  },
   'accountVerification' : {
     'english' : 'account verification',
     'arabic' : 'توثيق الحساب'
@@ -1023,5 +1031,9 @@ Map<String, Map<String, String>> languageManager = {
   'chargeYourWallet' : {
     'english' : 'charge your wallet',
     'arabic' : 'اشحن محفظتك'
+  },
+  'consultationId' : {
+    'english' : 'Consultation ID',
+    'arabic' : 'رقم الاستشارة'
   },
 };

@@ -1,5 +1,8 @@
+import 'package:fahem/core/network/api_constants.dart';
 import 'package:fahem/core/resources/colors_manager.dart';
+import 'package:fahem/core/resources/constants_manager.dart';
 import 'package:fahem/core/resources/fonts_manager.dart';
+import 'package:fahem/core/resources/routes_manager.dart';
 import 'package:fahem/core/resources/strings_manager.dart';
 import 'package:fahem/core/resources/values_manager.dart';
 import 'package:fahem/core/utils/app_provider.dart';
@@ -7,12 +10,15 @@ import 'package:fahem/core/utils/dialogs.dart';
 import 'package:fahem/core/utils/enums.dart';
 import 'package:fahem/core/utils/extensions.dart';
 import 'package:fahem/core/utils/methods.dart';
+import 'package:fahem/data/models/lawyers/lawyers/lawyer_model.dart';
 import 'package:fahem/data/models/transactions/transactions/transaction_model.dart';
 import 'package:fahem/domain/usecases/transactions/transactions/toggle_is_done_instant_consultation_usecase.dart';
 import 'package:fahem/presentation/btm_nav_bar/transactions/controllers/instant_consultations_comments_provider.dart';
 import 'package:fahem/presentation/btm_nav_bar/transactions/controllers/transactions_provider.dart';
 import 'package:fahem/presentation/btm_nav_bar/transactions/widgets/instant_consultation_comment_item.dart';
+import 'package:fahem/presentation/features/lawyers/lawyers/controllers/lawyers_provider.dart';
 import 'package:fahem/presentation/shared/absorb_pointer_widget.dart';
+import 'package:fahem/presentation/shared/cached_network_image_widget.dart';
 import 'package:fahem/presentation/shared/custom_button.dart';
 import 'package:fahem/presentation/shared/previous_button.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +37,8 @@ class _ReturnToTheTransactionScreenState extends State<ReturnToTheTransactionScr
   late AppProvider appProvider;
   late TransactionsProvider transactionsProvider;
   late InstantConsultationsCommentsProvider instantConsultationsCommentsProvider;
+  late LawyersProvider lawyersProvider;
+  LawyerModel? bestLawyer;
 
   @override
   void initState() {
@@ -38,6 +46,9 @@ class _ReturnToTheTransactionScreenState extends State<ReturnToTheTransactionScr
     appProvider = Provider.of<AppProvider>(context, listen: false);
     transactionsProvider = Provider.of<TransactionsProvider>(context, listen: false);
     instantConsultationsCommentsProvider = Provider.of<InstantConsultationsCommentsProvider>(context, listen: false);
+    lawyersProvider = Provider.of<LawyersProvider>(context, listen: false);
+
+    bestLawyer = widget.transactionModel.bestLawyerId == null ? null : lawyersProvider.getLawyerWithId(widget.transactionModel.bestLawyerId!);
 
     instantConsultationsCommentsProvider.commentsForTransaction = instantConsultationsCommentsProvider.instantConsultationsComments.where((element) => element.transactionId == widget.transactionModel.transactionId).toList();
 
@@ -173,6 +184,53 @@ class _ReturnToTheTransactionScreenState extends State<ReturnToTheTransactionScr
                             ),
                             const SizedBox(height: SizeManager.s20),
 
+                            if(bestLawyer != null) ...[
+                              Text(
+                                Methods.getText(StringsManager.bestLawyer, appProvider.isEnglish).toCapitalized(),
+                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: SizeManager.s20, fontWeight: FontWeightManager.black),
+                              ),
+                              const SizedBox(height: SizeManager.s8),
+                              Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: ColorsManager.white,
+                                  borderRadius: BorderRadius.circular(SizeManager.s10),
+                                  boxShadow: [BoxShadow(color: ColorsManager.black.withOpacity(0.1), blurRadius: SizeManager.s2, spreadRadius: SizeManager.s1)],
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () => Navigator.pushNamed(context, Routes.lawyerDetailsRoute, arguments: {ConstantsManager.lawyerModelArgument: bestLawyer}),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(SizeManager.s10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: SizeManager.s80,
+                                            height: SizeManager.s80,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(SizeManager.s10),
+                                              child: CachedNetworkImageWidget(
+                                                image: ApiConstants.fileUrl(fileName: '${ApiConstants.lawyersDirectory}/${bestLawyer!.personalImage}'),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: SizeManager.s10),
+                                          Flexible(
+                                            child: Text(
+                                              bestLawyer!.name,
+                                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeightManager.bold),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: SizeManager.s20),
+                            ],
+
                             Text(
                               '${Methods.getText(StringsManager.comments, appProvider.isEnglish).toCapitalized()} (${instantConsultationsCommentsProvider.commentsForTransaction.length})',
                               style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: SizeManager.s20, fontWeight: FontWeightManager.black),
@@ -235,6 +293,21 @@ class _ReturnToTheTransactionScreenState extends State<ReturnToTheTransactionScr
                                   ),
                                 ),
                               ],
+                            ),
+                            const SizedBox(height: SizeManager.s20),
+
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(SizeManager.s10),
+                              decoration: BoxDecoration(
+                                color: ColorsManager.grey1,
+                                borderRadius: BorderRadius.circular(SizeManager.s10),
+                              ),
+                              child: Text(
+                                '${Methods.getText(StringsManager.consultationId, appProvider.isEnglish)} CON-${widget.transactionModel.transactionId}',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeightManager.bold),
+                              ),
                             ),
                             const SizedBox(height: SizeManager.s20),
 
@@ -303,19 +376,44 @@ class _ReturnToTheTransactionScreenState extends State<ReturnToTheTransactionScr
                         child: CustomButton(
                           buttonType: ButtonType.text,
                           onPressed: () {
-                            Dialogs.showBottomSheetConfirmation(context: context, message: Methods.getText(StringsManager.areYouSureAboutTheProcessOfClosingTheConsultation, appProvider.isEnglish).toCapitalized()).then((value) {
-                              if(value) {
-                                ToggleIsDoneInstantConsultationParameters parameters = ToggleIsDoneInstantConsultationParameters(
-                                  transactionId: widget.transactionModel.transactionId,
-                                );
-                                transactionsProvider.toggleIsDoneInstantConsultation(context, parameters);
-                                Dialogs.showBottomSheetMessage(
-                                  context: context,
-                                  message: Methods.getText(StringsManager.consultationClosed, appProvider.isEnglish).toCapitalized(),
-                                  showMessage: ShowMessage.success,
-                                );
-                              }
-                            });
+                            List<int> lawyersIds = instantConsultationsCommentsProvider.commentsForTransaction.map((e) => e.lawyerId).toSet().toList();
+                            if(lawyersIds.isEmpty) { // No Replays
+                              Dialogs.showBottomSheetConfirmation(context: context, message: Methods.getText(StringsManager.areYouSureAboutTheProcessOfClosingTheConsultation, appProvider.isEnglish).toCapitalized()).then((value) {
+                                if(value) {
+                                  ToggleIsDoneInstantConsultationParameters parameters = ToggleIsDoneInstantConsultationParameters(
+                                    transactionId: widget.transactionModel.transactionId,
+                                    bestLawyerId: null,
+                                  );
+                                  transactionsProvider.toggleIsDoneInstantConsultation(context, parameters);
+                                  Dialogs.showBottomSheetMessage(
+                                    context: context,
+                                    message: Methods.getText(StringsManager.consultationClosed, appProvider.isEnglish).toCapitalized(),
+                                    showMessage: ShowMessage.success,
+                                  );
+                                }
+                              });
+                            }
+                            else {
+                              Dialogs.chooseBetterLawyer(context).then((lawyer) {
+                                if(lawyer != null) {
+                                  Dialogs.showBottomSheetConfirmation(context: context, message: Methods.getText(StringsManager.areYouSureAboutTheProcessOfClosingTheConsultation, appProvider.isEnglish).toCapitalized()).then((value) {
+                                    if(value) {
+                                      ToggleIsDoneInstantConsultationParameters parameters = ToggleIsDoneInstantConsultationParameters(
+                                        transactionId: widget.transactionModel.transactionId,
+                                        bestLawyerId: lawyer.lawyerId,
+                                      );
+                                      transactionsProvider.toggleIsDoneInstantConsultation(context, parameters);
+                                      bestLawyer = lawyer;
+                                      Dialogs.showBottomSheetMessage(
+                                        context: context,
+                                        message: Methods.getText(StringsManager.consultationClosed, appProvider.isEnglish).toCapitalized(),
+                                        showMessage: ShowMessage.success,
+                                      );
+                                    }
+                                  });
+                                }
+                              });
+                            }
                           },
                           text: Methods.getText((isDoneInstantConsultation == null || isDoneInstantConsultation == false) ? StringsManager.doneConsultation : StringsManager.consultationClosed, appProvider.isEnglish).toTitleCase(),
                         ),
